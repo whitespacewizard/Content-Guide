@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkedIn DM Selling System</title>
+<style>
+  :root{
+    --bg:#f6f8fc;
+    --surface:#ffffff;
+    --surface-2:#eef4ff;
+    --text:#172033;
+    --muted:#667085;
+    --border:#dbe3ef;
+    --blue:#2563eb;
+    --blue-dark:#1d4ed8;
+    --green:#16835f;
+    --green-bg:#eaf8f2;
+    --amber:#a66300;
+    --amber-bg:#fff7df;
+    --red:#b42318;
+    --red-bg:#fff0ee;
+    --shadow:0 10px 28px rgba(28,39,60,.08);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  .page{
+    max-width:1180px;
+    margin:auto;
+    padding:42px 18px 70px;
+  }
+
+  .hero{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:24px;
+    align-items:end;
+    margin-bottom:30px;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(34px,5vw,58px);
+    line-height:1.02;
+    letter-spacing:-.035em;
+  }
+
+  .hero p{
+    color:var(--muted);
+    line-height:1.65;
+    margin:14px 0 0;
+    max-width:780px;
+    font-size:17px;
+  }
+
+  .hero-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow);
+  }
+
+  .hero-card small{
+    color:var(--muted);
+    display:block;
+    margin-bottom:8px;
+  }
+
+  .hero-card strong{
+    display:block;
+    font-size:21px;
+    line-height:1.25;
+  }
+
+  .hero-card span{
+    display:block;
+    color:var(--muted);
+    margin-top:8px;
+    line-height:1.45;
+  }
+
+  .section-title{
+    margin:42px 0 8px;
+    font-size:27px;
+    letter-spacing:-.02em;
+  }
+
+  .section-copy{
+    color:var(--muted);
+    line-height:1.6;
+    margin:0 0 18px;
+    max-width:850px;
+  }
+
+  /* OVERVIEW FLOW */
+  .overview{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:24px;
+    box-shadow:var(--shadow);
+  }
+
+  .flow-grid{
+    display:grid;
+    grid-template-columns:1fr 42px 1fr 42px 1fr 42px 1fr;
+    gap:0;
+    align-items:stretch;
+  }
+
+  .node{
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:17px;
+    padding:16px;
+    min-height:145px;
+    position:relative;
+  }
+
+  .node.primary{background:var(--surface-2); border-color:#cbdcff}
+  .node.success{background:var(--green-bg); border-color:#bfe8d7}
+  .node.warn{background:var(--amber-bg); border-color:#f1daa1}
+
+  .kicker{
+    color:var(--blue);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .node h3{
+    margin:7px 0 7px;
+    font-size:18px;
+    letter-spacing:-.01em;
+  }
+
+  .node p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.48;
+    font-size:14px;
+  }
+
+  .arrow{
+    display:grid;
+    place-items:center;
+    color:var(--blue);
+    font-size:27px;
+    font-weight:800;
+  }
+
+  .flow-grid + .flow-grid{margin-top:15px}
+
+  .decision{
+    background:var(--amber-bg);
+    border:1px solid #efd48e;
+  }
+
+  .decision-label{
+    display:inline-block;
+    margin-top:12px;
+    padding:5px 9px;
+    border-radius:999px;
+    background:white;
+    border:1px solid #ecd9a4;
+    color:var(--amber);
+    font-size:12px;
+    font-weight:700;
+  }
+
+  .reject{
+    margin-top:12px;
+    padding:8px 10px;
+    border-radius:10px;
+    background:var(--red-bg);
+    color:var(--red);
+    font-size:12px;
+    line-height:1.35;
+  }
+
+  .mini-arrow{
+    text-align:center;
+    color:var(--blue);
+    font-weight:800;
+    margin:10px 0;
+    font-size:21px;
+  }
+
+  /* CURIOSITY GAP */
+  .gap-diagram{
+    display:grid;
+    grid-template-columns:1fr 160px 1fr;
+    gap:16px;
+    align-items:center;
+    margin-top:18px;
+  }
+
+  .state{
+    border-radius:20px;
+    padding:22px;
+    border:1px solid var(--border);
+    min-height:220px;
+  }
+
+  .state.bad{
+    background:var(--red-bg);
+    border-color:#f0c5bf;
+  }
+
+  .state.good{
+    background:var(--green-bg);
+    border-color:#bfe8d7;
+  }
+
+  .state h3{
+    margin:0 0 10px;
+    font-size:21px;
+  }
+
+  .state ul{
+    margin:0;
+    padding-left:19px;
+    color:var(--muted);
+    line-height:1.7;
+  }
+
+  .bridge{
+    text-align:center;
+  }
+
+  .bridge-line{
+    height:4px;
+    border-radius:999px;
+    background:var(--blue);
+    position:relative;
+    margin:14px 4px;
+  }
+
+  .bridge-line:after{
+    content:"";
+    position:absolute;
+    right:-1px;
+    top:-6px;
+    border-left:12px solid var(--blue);
+    border-top:8px solid transparent;
+    border-bottom:8px solid transparent;
+  }
+
+  .bridge b{
+    font-size:16px;
+  }
+
+  .bridge small{
+    color:var(--muted);
+    display:block;
+    line-height:1.4;
+  }
+
+  .gap-questions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:14px;
+  }
+
+  .question{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+  }
+
+  .question b{
+    font-size:13px;
+    color:var(--blue);
+    display:block;
+    margin-bottom:5px;
+  }
+
+  .question span{
+    font-size:14px;
+    line-height:1.45;
+    color:var(--muted);
+  }
+
+  /* CONVERSATION */
+  .conversation-wrap{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .chat-panel, .logic-panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:var(--shadow);
+  }
+
+  .chat{
+    display:grid;
+    gap:11px;
+  }
+
+  .bubble{
+    max-width:88%;
+    border-radius:16px;
+    padding:12px 14px;
+    line-height:1.48;
+    font-size:14px;
+  }
+
+  .bubble.you{
+    justify-self:end;
+    background:var(--blue);
+    color:white;
+    border-bottom-right-radius:5px;
+  }
+
+  .bubble.them{
+    justify-self:start;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-bottom-left-radius:5px;
+  }
+
+  .speaker{
+    display:block;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    opacity:.72;
+    margin-bottom:4px;
+  }
+
+  .logic-row{
+    display:grid;
+    grid-template-columns:40px 1fr;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid var(--border);
+  }
+
+  .logic-row:last-child{border-bottom:0}
+
+  .logic-num{
+    width:34px;height:34px;
+    border-radius:50%;
+    background:var(--surface-2);
+    color:var(--blue);
+    display:grid;
+    place-items:center;
+    font-weight:800;
+  }
+
+  .logic-row b{display:block;margin-bottom:4px}
+  .logic-row span{color:var(--muted);font-size:14px;line-height:1.45}
+
+  /* CRM */
+  .crm{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:22px;
+    box-shadow:var(--shadow);
+  }
+
+  .crm-flow{
+    display:grid;
+    grid-template-columns:repeat(7,auto);
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:18px;
+  }
+
+  .crm-stage{
+    flex:1;
+    min-width:0;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:15px;
+    background:#fff;
+  }
+
+  .crm-stage strong{
+    display:block;
+    margin-bottom:5px;
+  }
+
+  .crm-stage small{
+    color:var(--muted);
+    line-height:1.4;
+  }
+
+  .crm-arrow{
+    color:var(--blue);
+    font-weight:800;
+    font-size:22px;
+  }
+
+  .tracking{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:16px;
+  }
+
+  .track{
+    padding:14px;
+    border-radius:14px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+  }
+
+  .track b{display:block;font-size:13px;margin-bottom:5px}
+  .track span{color:var(--muted);font-size:13px;line-height:1.4}
+
+  /* DON'T DO */
+  .dont{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  .dont-card{
+    border-radius:18px;
+    padding:18px;
+    border:1px solid #f0c5bf;
+    background:var(--red-bg);
+  }
+
+  .dont-card h3{margin:0 0 7px;font-size:17px;color:var(--red)}
+  .dont-card p{margin:0;color:#7a4a45;line-height:1.5;font-size:14px}
+
+  .footer{
+    margin-top:30px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  @media(max-width:900px){
+    .hero,.conversation-wrap{grid-template-columns:1fr}
+    .flow-grid{
+      grid-template-columns:1fr;
+      gap:0;
+    }
+    .arrow{
+      min-height:36px;
+      transform:rotate(90deg);
+    }
+    .flow-grid + .flow-grid{margin-top:0}
+    .gap-diagram{grid-template-columns:1fr}
+    .bridge-line{transform:rotate(90deg); width:85px; margin:38px auto}
+    .gap-questions,.tracking{grid-template-columns:1fr}
+    .crm-flow{
+      grid-template-columns:1fr;
+      justify-content:stretch;
+    }
+    .crm-arrow{
+      text-align:center;
+      transform:rotate(90deg);
+    }
+  }
+
+  @media(max-width:620px){
+    .page{padding:28px 12px 50px}
+    .overview,.chat-panel,.logic-panel,.crm{padding:15px;border-radius:18px}
+    .dont{grid-template-columns:1fr}
+  }
+
+  /* Navigation + Hooks Library */
+  .top-nav-wrap{position:sticky;top:10px;z-index:50;display:flex;justify-content:center;margin:0 0 28px;pointer-events:none}
+  .top-nav{pointer-events:auto;display:flex;gap:6px;padding:6px;background:rgba(255,255,255,.95);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+  .top-nav button{border:0;background:transparent;color:var(--muted);padding:11px 18px;border-radius:11px;font:inherit;font-weight:700;cursor:pointer}
+  .top-nav button.active{background:var(--blue);color:#fff}
+  .view{display:none}.view.active{display:block}
+  .hooks-hero{display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:end;margin-bottom:22px}
+  .hooks-hero p{color:var(--muted);line-height:1.6;max-width:800px}
+  .hook-count{background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+  .hook-count small{color:var(--muted);display:block}.hook-count strong{font-size:34px;color:var(--blue);display:block;margin-top:4px}
+  .hook-search{width:100%;margin:10px 0 18px;padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--text);font:inherit}
+  .hooks-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .hook-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 20px rgba(28,39,60,.05)}
+  .hook-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .hook-no{font-size:12px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
+  .copy-btn{border:1px solid var(--border);background:#f8fafc;border-radius:9px;padding:7px 9px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+  .hook-template{font-size:16px;font-weight:800;line-height:1.5;margin-bottom:10px}
+  .hook-example{background:var(--surface-2);border-radius:12px;padding:11px 12px;color:#44506a;font-size:13px;line-height:1.5}
+  .hook-example b{color:var(--blue)}
+  .hooks-note{margin-top:18px;padding:14px 16px;border-radius:14px;background:var(--amber-bg);border:1px solid #efdca8;color:#75511c;line-height:1.5}
+  @media(max-width:760px){.top-nav{width:100%;display:grid;grid-template-columns:1fr 1fr}.hooks-hero,.hooks-grid{grid-template-columns:1fr}.top-nav button{padding:10px 8px}}
+
+
+  /* YOUTUBE LIBRARY */
+  .yt-hero{
+    display:grid;
+    grid-template-columns:1.4fr .6fr;
+    gap:20px;
+    align-items:end;
+    margin-bottom:24px;
+  }
+  .yt-hero p{
+    color:var(--muted);
+    line-height:1.6;
+    max-width:820px;
+    font-size:17px;
+  }
+  .yt-count{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:var(--shadow);
+  }
+  .yt-count small{display:block;color:var(--muted);margin-bottom:4px}
+  .yt-count strong{display:block;font-size:34px;color:var(--blue)}
+  .yt-count span{display:block;color:var(--muted);font-size:13px;margin-top:4px;line-height:1.4}
+  .yt-intro{
+    padding:15px 17px;
+    background:var(--surface-2);
+    border:1px solid #cfdcff;
+    border-radius:15px;
+    color:#42526c;
+    line-height:1.55;
+    margin-bottom:18px;
+  }
+  .yt-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+  }
+  .yt-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 7px 22px rgba(28,39,60,.055);
+  }
+  .yt-card-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:13px;
+  }
+  .yt-index{
+    width:34px;
+    height:34px;
+    flex:0 0 auto;
+    border-radius:10px;
+    background:var(--blue);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    font-size:13px;
+  }
+  .yt-title-wrap{flex:1;min-width:0}
+  .yt-source{
+    display:inline-block;
+    color:var(--blue);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .yt-card h3{
+    margin:0;
+    font-size:19px;
+    line-height:1.3;
+    letter-spacing:-.01em;
+  }
+  .yt-core{
+    margin:12px 0 14px;
+    padding:11px 12px;
+    border-radius:12px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    color:#44506a;
+    line-height:1.5;
+    font-size:14px;
+  }
+  .yt-core b{color:var(--text)}
+  .yt-points{
+    margin:0;
+    padding-left:20px;
+    color:var(--muted);
+    line-height:1.58;
+    font-size:14px;
+  }
+  .yt-points li+li{margin-top:7px}
+  .yt-tag-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:15px;
+  }
+  .yt-tag{
+    font-size:11px;
+    font-weight:700;
+    color:#4f5f77;
+    background:#f3f6fa;
+    border:1px solid var(--border);
+    padding:5px 8px;
+    border-radius:999px;
+  }
+  .yt-footer-note{
+    margin-top:18px;
+    padding:14px 16px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:#fff;
+    color:var(--muted);
+    line-height:1.5;
+    font-size:13px;
+  }
+  @media(max-width:760px){
+    .top-nav{grid-template-columns:repeat(3,1fr)}
+    .yt-hero,.yt-grid{grid-template-columns:1fr}
+  }
+
+
+  .yt-template-box{
+    margin-top:14px;
+    padding:14px;
+    border-radius:14px;
+    background:var(--green-bg);
+    border:1px solid #bfe8d7;
+  }
+  .yt-template-box h4{
+    margin:0 0 8px;
+    font-size:14px;
+    color:var(--green);
+  }
+  .yt-template-box pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
+    font:inherit;
+    font-size:13px;
+    line-height:1.55;
+    color:#385c50;
+  }
+  .yt-template-box + .yt-template-box{margin-top:10px}
+
+</style>
+</head>
+<body>
+<main class="page">
+  <div class="top-nav-wrap">
+    <nav class="top-nav" aria-label="Main menu">
+      <button class="active" type="button" data-target="dm-strategy">DM Strategy</button>
+      <button type="button" data-target="hooks-library">Hooks</button>
+      <button type="button" data-target="youtube-library">YouTube</button>
+    </nav>
+  </div>
+
+  <section id="dm-strategy" class="view active">
+
+  <section class="hero">
+    <div>
+      <h1>LinkedIn DM Selling System</h1>
+      <p>
+        A simple visual map of the DM process from the transcript. The core idea is:
+        start with warm prospects, qualify the right people, create a clear gap between
+        their current situation and desired outcome, then offer help and move naturally to a call.
+      </p>
+    </div>
+    <aside class="hero-card">
+      <small>The whole process in one line</small>
+      <strong>Warm Intent → Qualify → Discover Gap → Offer Help → Book Call</strong>
+      <span>Every message should feel like the next natural thing to say, not like a rigid script.</span>
+    </aside>
+  </section>
+
+  <h2 class="section-title">1. The DM Flow</h2>
+  <p class="section-copy">
+    This is the operating sequence. The purpose of the early messages is not to pitch.
+    It is to earn a response, understand the buyer, and only move forward when there is a real fit.
+  </p>
+
+  <section class="overview">
+
+    <div class="flow-grid">
+      <article class="node primary">
+        <div class="kicker">Step 1</div>
+        <h3>Find Warm Intent</h3>
+        <p>Start with people who already interacted with you: likes, comments, views, follows, or connections.</p>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node decision">
+        <div class="kicker">Step 2</div>
+        <h3>Right ICP?</h3>
+        <p>Only continue if this person could realistically become a client.</p>
+        <span class="decision-label">YES → continue</span>
+        <div class="reject">NO → do not force a sales conversation.</div>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node">
+        <div class="kicker">Step 3</div>
+        <h3>Open the DM</h3>
+        <p>Use an easy, low-resistance question. Closed-ended questions can make replying simpler.</p>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node">
+        <div class="kicker">Step 4</div>
+        <h3>Current Situation</h3>
+        <p>Find out what they are focused on and what is happening in the business right now.</p>
+      </article>
+    </div>
+
+    <div class="mini-arrow">↓</div>
+
+    <div class="flow-grid">
+      <article class="node warn">
+        <div class="kicker">Step 5</div>
+        <h3>Probe the Problem</h3>
+        <p>Ask what changed recently and why this issue matters now. Go beyond the surface-level answer.</p>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node">
+        <div class="kicker">Step 6</div>
+        <h3>Desired State</h3>
+        <p>Get them to describe the result they actually want: more clients, lower costs, better rankings, etc.</p>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node primary">
+        <div class="kicker">Step 7</div>
+        <h3>Expose the Missing Piece</h3>
+        <p>Ask what is stopping them from getting there. Let the prospect say the gap in their own words.</p>
+      </article>
+
+      <div class="arrow">→</div>
+
+      <article class="node success">
+        <div class="kicker">Step 8–9</div>
+        <h3>Offer Help → Suggest Call</h3>
+        <p>If they want help, share a short relevant client story and suggest a call as the natural next step.</p>
+      </article>
+    </div>
+
+  </section>
+
+  <h2 class="section-title">2. The “Curiosity Gap”</h2>
+  <p class="section-copy">
+    The transcript describes the main job of the DM conversation as making the gap clear:
+    where the prospect is now, where they want to be, and what is missing between the two.
+  </p>
+
+  <section class="gap-diagram">
+    <article class="state bad">
+      <h3>Present Reality</h3>
+      <ul>
+        <li>Pipeline is inconsistent</li>
+        <li>Too dependent on referrals</li>
+        <li>Lead quality is weak</li>
+        <li>Growth is hard to scale</li>
+      </ul>
+    </article>
+
+    <div class="bridge">
+      <b>THE GAP</b>
+      <div class="bridge-line"></div>
+      <small>Your offer only matters after the gap is understood.</small>
+    </div>
+
+    <article class="state good">
+      <h3>Desired State</h3>
+      <ul>
+        <li>Predictable pipeline</li>
+        <li>3–5 qualified clients per month</li>
+        <li>Better quality opportunities</li>
+        <li>Less founder dependence</li>
+      </ul>
+    </article>
+  </section>
+
+  <div class="gap-questions">
+    <div class="question">
+      <b>Discover reality</b>
+      <span>“What are you focused on right now?”</span>
+    </div>
+    <div class="question">
+      <b>Expand the pain</b>
+      <span>“What have you seen recently that made this a priority?”</span>
+    </div>
+    <div class="question">
+      <b>Expose the gap</b>
+      <span>“What do you think is missing from getting you there?”</span>
+    </div>
+  </div>
+
+  <h2 class="section-title">3. Example DM Conversation</h2>
+  <p class="section-copy">
+    This should feel like a real conversation, not a qualification checklist. Notice how each message reacts to the prospect's last reply instead of jumping straight to the next scripted question.
+  </p>
+
+  <section class="conversation-wrap">
+
+    <div class="chat-panel">
+      <div class="chat">
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Hey, saw you liked my post on referrals. Random question: are referrals still doing most of the heavy lifting for you?
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Yeah, pretty much. We get some inbound too, but referrals are still the main thing.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Makes sense. Has that been working fine, or is the inconsistency starting to get annoying?
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Honestly, the inconsistency is the issue. Some months are great, then it suddenly goes quiet.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Yeah, that’s the frustrating part. Especially when the team has capacity but you can’t really predict what’s coming in.
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Exactly. We could probably handle another 3 or 4 clients right now.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Got you. What have you tried so far to make that more predictable?
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Mostly content and a bit of outbound. We get engagement, but we’re not really doing much with it.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Ah, got it. So the attention is there, it’s more that there isn’t a proper follow-up system behind it.
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Yeah, that’s probably the biggest gap.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          That’s actually very similar to what we see with a lot of agencies. We usually turn that warm engagement into a simple DM follow-up process instead of going straight to cold outreach.
+        </div>
+
+        <div class="bubble you">
+          <span class="speaker">You</span>
+          Happy to show you what that looks like if you want. Might be easier than me writing a novel in here 😄
+        </div>
+
+        <div class="bubble them">
+          <span class="speaker">Prospect</span>
+          Yeah, sure. Send it over.
+        </div>
+      </div></div>
+    </div>
+
+    <aside class="logic-panel">
+      <div class="logic-row">
+        <div class="logic-num">1</div>
+        <div><b>Contextual opener</b><span>Use something they actually did, such as liking a post, so the message has a reason to exist.</span></div>
+      </div>
+      <div class="logic-row">
+        <div class="logic-num">2</div>
+        <div><b>React before asking</b><span>Acknowledge what they said first. Then ask the next natural question.</span></div>
+      </div>
+      <div class="logic-row">
+        <div class="logic-num">3</div>
+        <div><b>Let the goal come out naturally</b><span>You do not always need a formal goal question. Their answer may reveal it for you.</span></div>
+      </div>
+      <div class="logic-row">
+        <div class="logic-num">4</div>
+        <div><b>Reflect the gap back</b><span>Summarize what you heard and let them confirm it in their own words.</span></div>
+      </div>
+      <div class="logic-row">
+        <div class="logic-num">5</div>
+        <div><b>Give a small insight</b><span>Show that you understand the problem before trying to move them anywhere.</span></div>
+      </div>
+      <div class="logic-row">
+        <div class="logic-num">6</div>
+        <div><b>Make the call low-pressure</b><span>Offer to show them the process. Let the meeting feel easier than continuing a long DM thread.</span></div>
+      </div>
+    </aside>
+
+  </section>
+
+  <h2 class="section-title">4. DM CRM Pipeline</h2>
+  <p class="section-copy">
+    The transcript also stresses tracking every conversation so warm leads and follow-ups do not disappear inside LinkedIn.
+  </p>
+
+  <section class="crm">
+    <div class="crm-flow">
+      <div class="crm-stage">
+        <strong>Opened</strong>
+        <small>DM thread started.</small>
+      </div>
+      <div class="crm-arrow">→</div>
+      <div class="crm-stage">
+        <strong>Qualifying</strong>
+        <small>Prospect is engaged and the gap is being explored.</small>
+      </div>
+      <div class="crm-arrow">→</div>
+      <div class="crm-stage">
+        <strong>Meeting Link Sent</strong>
+        <small>Prospect is ready for the booking step.</small>
+      </div>
+      <div class="crm-arrow">→</div>
+      <div class="crm-stage">
+        <strong>Meeting Booked</strong>
+        <small>Qualified call is on the calendar.</small>
+      </div>
+    </div>
+
+    <div class="tracking">
+      <div class="track">
+        <b>Track follow-ups</b>
+        <span>Do not lose people just because the timing was not right today.</span>
+      </div>
+      <div class="track">
+        <b>Know your conversion numbers</b>
+        <span>Opened → qualifying → link sent → booked lets you treat DMs like a funnel.</span>
+      </div>
+      <div class="track">
+        <b>Speed to lead</b>
+        <span>Hot replies should be handled quickly while intent is high.</span>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">5. What the Transcript Says to Avoid</h2>
+  <div class="dont">
+    <article class="dont-card">
+      <h3>Pitch Slap</h3>
+      <p>Connect with someone and immediately surprise them with a sales pitch. This creates buyer resistance.</p>
+    </article>
+    <article class="dont-card">
+      <h3>Endless Casual Chat</h3>
+      <p>Keep talking forever without ever surfacing a problem, offering help, or creating a conversion event.</p>
+    </article>
+  </div>
+
+  <div class="footer">
+    Built from the supplied video transcript. The main concepts preserved are warm-network activation, ICP qualification,
+    natural conversational progression, curiosity-gap selling, permission-based help, a short client story, call booking,
+    and CRM tracking.
+  </div>
+
+
+  </section>
+
+  <section id="hooks-library" class="view">
+    <div class="hooks-hero">
+      <div>
+        <h1>33 Viral Hook Templates</h1>
+        <p>Use the structure, then replace the bracketed parts with your niche, audience, problem, result, proof, or method.</p>
+      </div>
+      <aside class="hook-count"><small>Hook library</small><strong>33</strong><span>Templates with examples</span></aside>
+    </div>
+    <input id="hook-search" class="hook-search" type="search" placeholder="Search hooks..." aria-label="Search hook templates">
+    <div class="hooks-grid">
+
+      <article class="hook-card" data-search="if i woke up in [undesirable state] tomorrow and wanted to get [result] in [time], here’s exactly what i would do. if i woke up 30 lb overweight tomorrow and wanted to lose it all by summer, here’s exactly what i’d do.">
+        <div class="hook-top"><span class="hook-no">Hook 1</span><button class="copy-btn" type="button" data-copy="If I woke up in [undesirable state] tomorrow and wanted to get [result] in [time], here’s exactly what I would do.">Copy</button></div>
+        <div class="hook-template">If I woke up in [undesirable state] tomorrow and wanted to get [result] in [time], here’s exactly what I would do.</div>
+        <div class="hook-example"><b>Example:</b> If I woke up 30 lb overweight tomorrow and wanted to lose it all by summer, here’s exactly what I’d do.</div>
+      </article>
+      <article class="hook-card" data-search="so you want to [achieve outcome], but hate [required painful action]? so you want to create content, but hate talking to the camera?">
+        <div class="hook-top"><span class="hook-no">Hook 2</span><button class="copy-btn" type="button" data-copy="So you want to [achieve outcome], but hate [required painful action]?">Copy</button></div>
+        <div class="hook-template">So you want to [achieve outcome], but hate [required painful action]?</div>
+        <div class="hook-example"><b>Example:</b> So you want to create content, but hate talking to the camera?</div>
+      </article>
+      <article class="hook-card" data-search="i wasn’t born a genius, but i do know how to [action]. here’s how you can get [result] just by doing [action] the right way and not by being a genius. i wasn’t born a genius, but i do know how to study. i’m going to show you how to get grades like this in any class just by studying the right way.">
+        <div class="hook-top"><span class="hook-no">Hook 3</span><button class="copy-btn" type="button" data-copy="I wasn’t born a genius, but I do know how to [action]. Here’s how you can get [result] just by doing [action] the right way and not by being a genius.">Copy</button></div>
+        <div class="hook-template">I wasn’t born a genius, but I do know how to [action]. Here’s how you can get [result] just by doing [action] the right way and not by being a genius.</div>
+        <div class="hook-example"><b>Example:</b> I wasn’t born a genius, but I do know how to study. I’m going to show you how to get grades like this in any class just by studying the right way.</div>
+      </article>
+      <article class="hook-card" data-search="unless you want people to accuse you of using a [cheat], i don’t recommend doing this because you might [achieve desired outcome] way too fast. unless you want people to accuse you of going on ozempic, i don’t recommend doing this because you might lose weight way too fast.">
+        <div class="hook-top"><span class="hook-no">Hook 4</span><button class="copy-btn" type="button" data-copy="Unless you want people to accuse you of using a [cheat], I don’t recommend doing this because you might [achieve desired outcome] way too fast.">Copy</button></div>
+        <div class="hook-template">Unless you want people to accuse you of using a [cheat], I don’t recommend doing this because you might [achieve desired outcome] way too fast.</div>
+        <div class="hook-example"><b>Example:</b> Unless you want people to accuse you of going on Ozempic, I don’t recommend doing this because you might lose weight way too fast.</div>
+      </article>
+      <article class="hook-card" data-search="most [things] suck. here’s how to make them suck less. most landing pages suck. here’s how to make them suck less.">
+        <div class="hook-top"><span class="hook-no">Hook 5</span><button class="copy-btn" type="button" data-copy="Most [things] suck. Here’s how to make them suck less.">Copy</button></div>
+        <div class="hook-template">Most [things] suck. Here’s how to make them suck less.</div>
+        <div class="hook-example"><b>Example:</b> Most landing pages suck. Here’s how to make them suck less.</div>
+      </article>
+      <article class="hook-card" data-search="your [niche-specific thing] is weak and you need to strengthen it. that’s why you’re always experiencing [negative outcome]. your tongue game is weak and you need to strengthen it. that’s why you may be stumbling, stuttering, or even mumbling.">
+        <div class="hook-top"><span class="hook-no">Hook 6</span><button class="copy-btn" type="button" data-copy="Your [niche-specific thing] is weak and you need to strengthen it. That’s why you’re always experiencing [negative outcome].">Copy</button></div>
+        <div class="hook-template">Your [niche-specific thing] is weak and you need to strengthen it. That’s why you’re always experiencing [negative outcome].</div>
+        <div class="hook-example"><b>Example:</b> Your tongue game is weak and you need to strengthen it. That’s why you may be stumbling, stuttering, or even mumbling.</div>
+      </article>
+      <article class="hook-card" data-search="if i could only use [x tools/things] for the rest of my life, here’s exactly what i would use. if i could only take five supplements for the rest of my life, here’s exactly what i’d take.">
+        <div class="hook-top"><span class="hook-no">Hook 7</span><button class="copy-btn" type="button" data-copy="If I could only use [X tools/things] for the rest of my life, here’s exactly what I would use.">Copy</button></div>
+        <div class="hook-template">If I could only use [X tools/things] for the rest of my life, here’s exactly what I would use.</div>
+        <div class="hook-example"><b>Example:</b> If I could only take five supplements for the rest of my life, here’s exactly what I’d take.</div>
+      </article>
+      <article class="hook-card" data-search="it took me [x years] to master [skill], but i’m going to teach you the [x] most powerful lessons in the next [x seconds]. it took me 12 years to master my communication, but i’m going to give you the five most powerful lessons in the next 60 seconds.">
+        <div class="hook-top"><span class="hook-no">Hook 8</span><button class="copy-btn" type="button" data-copy="It took me [X years] to master [skill], but I’m going to teach you the [X] most powerful lessons in the next [X seconds].">Copy</button></div>
+        <div class="hook-template">It took me [X years] to master [skill], but I’m going to teach you the [X] most powerful lessons in the next [X seconds].</div>
+        <div class="hook-example"><b>Example:</b> It took me 12 years to master my communication, but I’m going to give you the five most powerful lessons in the next 60 seconds.</div>
+      </article>
+      <article class="hook-card" data-search="for the love of god, whatever you do in [situation], do not forget to use [unknown technique]. for the love of god, whatever you do in an interview process, do not forget to ask the high performer question.">
+        <div class="hook-top"><span class="hook-no">Hook 9</span><button class="copy-btn" type="button" data-copy="For the love of God, whatever you do in [situation], do not forget to use [unknown technique].">Copy</button></div>
+        <div class="hook-template">For the love of God, whatever you do in [situation], do not forget to use [unknown technique].</div>
+        <div class="hook-example"><b>Example:</b> For the love of God, whatever you do in an interview process, do not forget to ask the high performer question.</div>
+      </article>
+      <article class="hook-card" data-search="i’ve consumed over [x content types] on [topic]. 50% were pretty useless, 25% were wrong, but [x] really changed how i think about [your niche] forever. i’ve listened to over a thousand podcasts on making money. 50% were pretty useless, 25% were kind of wrong, and 11 really changed how i think about finances forever.">
+        <div class="hook-top"><span class="hook-no">Hook 10</span><button class="copy-btn" type="button" data-copy="I’ve consumed over [X content types] on [topic]. 50% were pretty useless, 25% were wrong, but [X] really changed how I think about [your niche] forever.">Copy</button></div>
+        <div class="hook-template">I’ve consumed over [X content types] on [topic]. 50% were pretty useless, 25% were wrong, but [X] really changed how I think about [your niche] forever.</div>
+        <div class="hook-example"><b>Example:</b> I’ve listened to over a thousand podcasts on making money. 50% were pretty useless, 25% were kind of wrong, and 11 really changed how I think about finances forever.</div>
+      </article>
+      <article class="hook-card" data-search="not to flex, but i’m pretty good at [action]. if i had to wake up tomorrow and do [action] well, this is what i’d do. not to flex, but i’m pretty good at being productive. if i had to wake up tomorrow and be the most productive version of myself, here are the three things i’d do.">
+        <div class="hook-top"><span class="hook-no">Hook 11</span><button class="copy-btn" type="button" data-copy="Not to flex, but I’m pretty good at [action]. If I had to wake up tomorrow and do [action] well, this is what I’d do.">Copy</button></div>
+        <div class="hook-template">Not to flex, but I’m pretty good at [action]. If I had to wake up tomorrow and do [action] well, this is what I’d do.</div>
+        <div class="hook-example"><b>Example:</b> Not to flex, but I’m pretty good at being productive. If I had to wake up tomorrow and be the most productive version of myself, here are the three things I’d do.</div>
+      </article>
+      <article class="hook-card" data-search="90% of [your audience] ignore this one thing about [specific thing], and that’s why 90% stay in [undesirable state]. 90% of traders ignore this one thing about time frames and that’s why 90% remain unprofitable.">
+        <div class="hook-top"><span class="hook-no">Hook 12</span><button class="copy-btn" type="button" data-copy="90% of [your audience] ignore this one thing about [specific thing], and that’s why 90% stay in [undesirable state].">Copy</button></div>
+        <div class="hook-template">90% of [your audience] ignore this one thing about [specific thing], and that’s why 90% stay in [undesirable state].</div>
+        <div class="hook-example"><b>Example:</b> 90% of traders ignore this one thing about time frames and that’s why 90% remain unprofitable.</div>
+      </article>
+      <article class="hook-card" data-search="i do not recommend you do this, but if you wanted to [achieve desirable outcome] fast, then here’s how to do it. i do not recommend you do this, but if you want to get shredded fast, then here’s how to do it.">
+        <div class="hook-top"><span class="hook-no">Hook 13</span><button class="copy-btn" type="button" data-copy="I do not recommend you do this, but if you wanted to [achieve desirable outcome] fast, then here’s how to do it.">Copy</button></div>
+        <div class="hook-template">I do not recommend you do this, but if you wanted to [achieve desirable outcome] fast, then here’s how to do it.</div>
+        <div class="hook-example"><b>Example:</b> I do not recommend you do this, but if you want to get shredded fast, then here’s how to do it.</div>
+      </article>
+      <article class="hook-card" data-search="how do you become disgustingly [desirable trait]? here are some things you can do to become disgustingly well-spoken.">
+        <div class="hook-top"><span class="hook-no">Hook 14</span><button class="copy-btn" type="button" data-copy="How do you become disgustingly [desirable trait]?">Copy</button></div>
+        <div class="hook-template">How do you become disgustingly [desirable trait]?</div>
+        <div class="hook-example"><b>Example:</b> Here are some things you can do to become disgustingly well-spoken.</div>
+      </article>
+      <article class="hook-card" data-search="no, no, no. i’m sexually attracted to [free tool]. oh, no, no. i’m sexually attracted to a free editing website.">
+        <div class="hook-top"><span class="hook-no">Hook 15</span><button class="copy-btn" type="button" data-copy="No, no, no. I’m sexually attracted to [free tool].">Copy</button></div>
+        <div class="hook-template">No, no, no. I’m sexually attracted to [free tool].</div>
+        <div class="hook-example"><b>Example:</b> Oh, no, no. I’m sexually attracted to a free editing website.</div>
+      </article>
+      <article class="hook-card" data-search="don’t get me wrong, [common difficult action] is hard, but [specific tool/method] makes it really easy. don’t get me wrong, dieting is hard, but ninja creami makes it really easy.">
+        <div class="hook-top"><span class="hook-no">Hook 16</span><button class="copy-btn" type="button" data-copy="Don’t get me wrong, [common difficult action] is hard, but [specific tool/method] makes it really easy.">Copy</button></div>
+        <div class="hook-template">Don’t get me wrong, [common difficult action] is hard, but [specific tool/method] makes it really easy.</div>
+        <div class="hook-example"><b>Example:</b> Don’t get me wrong, dieting is hard, but Ninja Creami makes it really easy.</div>
+      </article>
+      <article class="hook-card" data-search="this person does [approach a], but this person does [approach b]. who will end up with the better results? this guy gets a super deep stretch on every rep, but this guy just trains hard using a standard range of motion. who will end up bigger and stronger?">
+        <div class="hook-top"><span class="hook-no">Hook 17</span><button class="copy-btn" type="button" data-copy="This person does [approach A], but this person does [approach B]. Who will end up with the better results?">Copy</button></div>
+        <div class="hook-template">This person does [approach A], but this person does [approach B]. Who will end up with the better results?</div>
+        <div class="hook-example"><b>Example:</b> This guy gets a super deep stretch on every rep, but this guy just trains hard using a standard range of motion. Who will end up bigger and stronger?</div>
+      </article>
+      <article class="hook-card" data-search="forget [common tactic]. if you want real [results], you need [unknown alternative]. forget hashtags. if you want real growth, you need instagram seo.">
+        <div class="hook-top"><span class="hook-no">Hook 18</span><button class="copy-btn" type="button" data-copy="Forget [common tactic]. If you want real [results], you need [unknown alternative].">Copy</button></div>
+        <div class="hook-template">Forget [common tactic]. If you want real [results], you need [unknown alternative].</div>
+        <div class="hook-example"><b>Example:</b> Forget hashtags. If you want real growth, you need Instagram SEO.</div>
+      </article>
+      <article class="hook-card" data-search="[term a] versus [similar term]. so, what’s the difference? net profit versus gross profit. so, what’s the difference?">
+        <div class="hook-top"><span class="hook-no">Hook 19</span><button class="copy-btn" type="button" data-copy="[Term A] versus [similar term]. So, what’s the difference?">Copy</button></div>
+        <div class="hook-template">[Term A] versus [similar term]. So, what’s the difference?</div>
+        <div class="hook-example"><b>Example:</b> Net profit versus gross profit. So, what’s the difference?</div>
+      </article>
+      <article class="hook-card" data-search="you’ll never reach [dream goal] if you’re experiencing [problem], and no, [common solution] is not the fix. you’ll never make the ufc if you’re gassing out in fights, and no more long runs is not the fix.">
+        <div class="hook-top"><span class="hook-no">Hook 20</span><button class="copy-btn" type="button" data-copy="You’ll never reach [dream goal] if you’re experiencing [problem], and no, [common solution] is not the fix.">Copy</button></div>
+        <div class="hook-template">You’ll never reach [dream goal] if you’re experiencing [problem], and no, [common solution] is not the fix.</div>
+        <div class="hook-example"><b>Example:</b> You’ll never make the UFC if you’re gassing out in fights, and no more long runs is not the fix.</div>
+      </article>
+      <article class="hook-card" data-search="do you want [popular desire], or do you want [real desire]? do you want to lose weight, or do you want to lose fat?">
+        <div class="hook-top"><span class="hook-no">Hook 21</span><button class="copy-btn" type="button" data-copy="Do you want [popular desire], or do you want [real desire]?">Copy</button></div>
+        <div class="hook-template">Do you want [popular desire], or do you want [real desire]?</div>
+        <div class="hook-example"><b>Example:</b> Do you want to lose weight, or do you want to lose fat?</div>
+      </article>
+      <article class="hook-card" data-search="most people will tell you that [common industry belief], but do you know what the research actually shows? most people will tell you that creatine is perfectly safe, but do you know what the research actually shows?">
+        <div class="hook-top"><span class="hook-no">Hook 22</span><button class="copy-btn" type="button" data-copy="Most people will tell you that [common industry belief], but do you know what the research actually shows?">Copy</button></div>
+        <div class="hook-template">Most people will tell you that [common industry belief], but do you know what the research actually shows?</div>
+        <div class="hook-example"><b>Example:</b> Most people will tell you that creatine is perfectly safe, but do you know what the research actually shows?</div>
+      </article>
+      <article class="hook-card" data-search="if you don’t do [important action] regularly, this information might convince you to change your ways. if you don’t exercise regularly, this x-ray might convince you to change your ways.">
+        <div class="hook-top"><span class="hook-no">Hook 23</span><button class="copy-btn" type="button" data-copy="If you don’t do [important action] regularly, this information might convince you to change your ways.">Copy</button></div>
+        <div class="hook-template">If you don’t do [important action] regularly, this information might convince you to change your ways.</div>
+        <div class="hook-example"><b>Example:</b> If you don’t exercise regularly, this X-ray might convince you to change your ways.</div>
+      </article>
+      <article class="hook-card" data-search="i genuinely believe that anybody can get [dream results] if you just learn to do [action]. i genuinely believe that anybody can go viral if you just learn to test your hooks.">
+        <div class="hook-top"><span class="hook-no">Hook 24</span><button class="copy-btn" type="button" data-copy="I genuinely believe that anybody can get [dream results] if you just learn to do [action].">Copy</button></div>
+        <div class="hook-template">I genuinely believe that anybody can get [dream results] if you just learn to do [action].</div>
+        <div class="hook-example"><b>Example:</b> I genuinely believe that anybody can go viral if you just learn to test your hooks.</div>
+      </article>
+      <article class="hook-card" data-search="by now i think everyone believes that [common belief], but what if everyone’s wrong? by now, i think everyone agrees that these are horrible for you, but what if everyone’s wrong?">
+        <div class="hook-top"><span class="hook-no">Hook 25</span><button class="copy-btn" type="button" data-copy="By now I think everyone believes that [common belief], but what if everyone’s wrong?">Copy</button></div>
+        <div class="hook-template">By now I think everyone believes that [common belief], but what if everyone’s wrong?</div>
+        <div class="hook-example"><b>Example:</b> By now, I think everyone agrees that these are horrible for you, but what if everyone’s wrong?</div>
+      </article>
+      <article class="hook-card" data-search="if your [thing] looks like this or like this, you’re not [common assumption]. you probably just have [unexpected problem]. if your stomach looks like this or like this, you’re not fat, you probably just have an overworked liver.">
+        <div class="hook-top"><span class="hook-no">Hook 26</span><button class="copy-btn" type="button" data-copy="If your [thing] looks like this or like this, you’re not [common assumption]. You probably just have [unexpected problem].">Copy</button></div>
+        <div class="hook-template">If your [thing] looks like this or like this, you’re not [common assumption]. You probably just have [unexpected problem].</div>
+        <div class="hook-example"><b>Example:</b> If your stomach looks like this or like this, you’re not fat, you probably just have an overworked liver.</div>
+      </article>
+      <article class="hook-card" data-search="if you can’t achieve at least [desired outcome] in [time period] using this [x strategy], you’re an idiot. if you can’t make at least $1,000 a day using this trading strategy, you’re an idiot.">
+        <div class="hook-top"><span class="hook-no">Hook 27</span><button class="copy-btn" type="button" data-copy="If you can’t achieve at least [desired outcome] in [time period] using this [X strategy], you’re an idiot.">Copy</button></div>
+        <div class="hook-template">If you can’t achieve at least [desired outcome] in [time period] using this [X strategy], you’re an idiot.</div>
+        <div class="hook-example"><b>Example:</b> If you can’t make at least $1,000 a day using this trading strategy, you’re an idiot.</div>
+      </article>
+      <article class="hook-card" data-search="if you are in [undesirable state], for the love of god, don’t skip this video. if you’re fat, for the love of god, do not skip this video.">
+        <div class="hook-top"><span class="hook-no">Hook 28</span><button class="copy-btn" type="button" data-copy="If you are in [undesirable state], for the love of God, don’t skip this video.">Copy</button></div>
+        <div class="hook-template">If you are in [undesirable state], for the love of God, don’t skip this video.</div>
+        <div class="hook-example"><b>Example:</b> If you’re fat, for the love of God, do not skip this video.</div>
+      </article>
+      <article class="hook-card" data-search="if you ever look at [yourself/situation] and think, ‘f*** this,’ this video is for you. if you ever look at yourself shirtless and think, ‘f*** this,’ then this video is for you.">
+        <div class="hook-top"><span class="hook-no">Hook 29</span><button class="copy-btn" type="button" data-copy="If you ever look at [yourself/situation] and think, ‘F*** this,’ this video is for you.">Copy</button></div>
+        <div class="hook-template">If you ever look at [yourself/situation] and think, ‘F*** this,’ this video is for you.</div>
+        <div class="hook-example"><b>Example:</b> If you ever look at yourself shirtless and think, ‘F*** this,’ then this video is for you.</div>
+      </article>
+      <article class="hook-card" data-search="don’t tell me [common excuse]. don’t tell me eating healthy is too expensive.">
+        <div class="hook-top"><span class="hook-no">Hook 30</span><button class="copy-btn" type="button" data-copy="Don’t tell me [common excuse].">Copy</button></div>
+        <div class="hook-template">Don’t tell me [common excuse].</div>
+        <div class="hook-example"><b>Example:</b> Don’t tell me eating healthy is too expensive.</div>
+      </article>
+      <article class="hook-card" data-search="i may be [bad at a skill], but i still get [desirable result]. i’m a terrible storyteller, and yet i still manage to get millions of views for myself, my students, and our clients.">
+        <div class="hook-top"><span class="hook-no">Hook 31</span><button class="copy-btn" type="button" data-copy="I may be [bad at a skill], but I still get [desirable result].">Copy</button></div>
+        <div class="hook-template">I may be [bad at a skill], but I still get [desirable result].</div>
+        <div class="hook-example"><b>Example:</b> I’m a terrible storyteller, and yet I still manage to get millions of views for myself, my students, and our clients.</div>
+      </article>
+      <article class="hook-card" data-search="ever ask yourself why [x] is trash even with [the thing that should help]? ever ask yourself why your wi-fi is trash even with a fast internet plan?">
+        <div class="hook-top"><span class="hook-no">Hook 32</span><button class="copy-btn" type="button" data-copy="Ever ask yourself why [X] is trash even with [the thing that should help]?">Copy</button></div>
+        <div class="hook-template">Ever ask yourself why [X] is trash even with [the thing that should help]?</div>
+        <div class="hook-example"><b>Example:</b> Ever ask yourself why your Wi-Fi is trash even with a fast internet plan?</div>
+      </article>
+      <article class="hook-card" data-search="everyone tells you to [popular advice], but no one actually shows you how to do it. here’s a [x-second] guide that you can save. everyone tells you to invest in a roth ira in 2025, but no one actually shows you how to do it. here’s a 45-second step-by-step tutorial that you can save.">
+        <div class="hook-top"><span class="hook-no">Hook 33</span><button class="copy-btn" type="button" data-copy="Everyone tells you to [popular advice], but no one actually shows you how to do it. Here’s a [X-second] guide that you can save.">Copy</button></div>
+        <div class="hook-template">Everyone tells you to [popular advice], but no one actually shows you how to do it. Here’s a [X-second] guide that you can save.</div>
+        <div class="hook-example"><b>Example:</b> Everyone tells you to invest in a Roth IRA in 2025, but no one actually shows you how to do it. Here’s a 45-second step-by-step tutorial that you can save.</div>
+      </article>
+    </div>
+    <div class="hooks-note">Tip: keep the hook structure, but rewrite the claim and language so it sounds natural for your audience.</div>
+  </section>
+
+  <section id="youtube-library" class="view">
+    <section class="yt-hero">
+      <div>
+        <h1>YouTube Notes Library</h1>
+        <p>
+          A clean reference page for the videos you shared. Each card keeps the main idea
+          and the most useful practical points, so you can come back later without rewatching the full video.
+        </p>
+      </div>
+      <aside class="yt-count">
+        <small>Videos summarized</small>
+        <strong>10</strong>
+        <span>DMs, LinkedIn, positioning, content, AI reputation, hooks and monetization.</span>
+      </aside>
+    </section>
+
+    <div class="yt-intro">
+      The titles below are exact where they appeared in the transcript. Where the original YouTube title was not included,
+      a clear descriptive title is used instead of guessing.
+    </div>
+
+    <div class="yt-grid">
+      
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">01</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">LinkedIn DM video</span>
+            <h3>Founder-Led LinkedIn DM System</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> Turn warm LinkedIn engagement into qualified sales calls without pitch-slapping people.</div>
+        <ul class="yt-points">
+          <li>Start with warm intent: likes, comments, views, follows, and existing connections.</li>
+<li>Filter for the right ICP before spending time in a conversation.</li>
+<li>Open with a low-friction, natural question instead of an immediate pitch.</li>
+<li>Create the curiosity gap: current reality → desired state → missing piece.</li>
+<li>Track every conversation in a DM CRM: Opened → Qualifying → Meeting Link Sent → Meeting Booked.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">DMs</span>
+<span class="yt-tag">LinkedIn</span>
+<span class="yt-tag">Sales</span>
+<span class="yt-tag">CRM</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">02</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">LinkedIn growth video</span>
+            <h3>Why Your LinkedIn Posts Only Get 12 Likes (Easy Fix)</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> LinkedIn engagement improves when you optimize the post, visual, and profile as one system.</div>
+        <ul class="yt-points">
+          <li>Optimize for dwell time and real comments, not just quick likes.</li>
+<li>Spend serious time on the first 1–2 lines because the hook does most of the work.</li>
+<li>Use storytelling, line breaks, and questions to keep readers consuming the post.</li>
+<li>Use real photos of yourself or your team instead of generic Canva-style graphics.</li>
+<li>Make your profile look authoritative because people judge the post together with the person behind it.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">LinkedIn</span>
+<span class="yt-tag">Hooks</span>
+<span class="yt-tag">Dwell Time</span>
+<span class="yt-tag">Personal Brand</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">03</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">LinkedIn positioning video</span>
+            <h3>I’m Begging You to Start Posting on LinkedIn</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> The real LinkedIn game is PCC: Positioning, Content, and Conversion.</div>
+        <ul class="yt-points">
+          <li>Your biggest problem may be positioning, not posting frequency or the algorithm.</li>
+<li>Build positioning through a clear point of view plus visible proof.</li>
+<li>Use two content types: specific educational content and transformation-based storytelling.</li>
+<li>Give every post one problem, one angle, and one clear person it is written for.</li>
+<li>Convert attention through a lead magnet, email list, or natural warm-DM follow-up.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">PCC</span>
+<span class="yt-tag">Positioning</span>
+<span class="yt-tag">Content</span>
+<span class="yt-tag">Conversion</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">04</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">Expert brand video</span>
+            <h3>Build an Expert Brand Before a Personal Brand</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> Followers are not the goal. Build trust in your expertise so the audience sees you as the person to pay.</div>
+        <ul class="yt-points">
+          <li>People do not have to like you first. They need to trust that you can solve the problem.</li>
+<li>Choose an expert niche based on the problem your offer solves.</li>
+<li>Speak to one specific dream avatar with clear pains, desires, beliefs, and language.</li>
+<li>Break your niche into four non-overlapping content quadrants.</li>
+<li>Publish across all four quadrants and give away your best knowledge to create positive reinforcement.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">Expert Brand</span>
+<span class="yt-tag">Content Pillars</span>
+<span class="yt-tag">Authority</span>
+<span class="yt-tag">Audience</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">05</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">Content value framework</span>
+            <h3>Trinity of Value</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> A valuable educational video needs a clear solution, uniqueness, and viewer depictability.</div>
+        <ul class="yt-points">
+          <li>Clear solution is the foundation: your video must bridge the viewer from problem A to desired result B.</li>
+<li>The viewer should not need extra homework just to understand how to act on the advice.</li>
+<li>The solution must be unique by being easier, more effective, or better explained than what they already know.</li>
+<li>Viewer depictability means they can picture themselves doing it, trust it will work, and believe the result is worth the effort.</li>
+<li>Judge value for your exact target audience, not for people in general.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">Trinity of Value</span>
+<span class="yt-tag">Educational Content</span>
+<span class="yt-tag">Scripting</span>
+<span class="yt-tag">Audience</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">06</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">Long-form content system</span>
+            <h3>The Content Bible</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> Build a repeatable content machine: valuable niche content, proven ideas, strong hooks, distribution, SEO, and monetization.</div>
+        <ul class="yt-points">
+          <li>Use VNB: Value-oriented, Niched down, then Broaden the niche for reach.</li>
+<li>Give actionable information that someone can implement quickly, and ask whether the information would feel worth paying for.</li>
+<li>Research proven creators and top-performing ideas instead of inventing every topic from scratch.</li>
+<li>His viral educational formula is: Peak Interest + Deliver Value.</li>
+<li>Monetization comes from repeatedly creating enough free value that people assume the paid offer is even more valuable.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">VNB</span>
+<span class="yt-tag">Research</span>
+<span class="yt-tag">Viral Video</span>
+<span class="yt-tag">Monetization</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">07</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">AI marketing video</span>
+            <h3>Neil Patel: AI Search, Trust &amp; Reputation</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> AI is moving discovery from a list of links to a verdict about which brands are credible enough to recommend.</div>
+        <ul class="yt-points">
+          <li>AI search evaluates businesses and may recommend only a small number of them instead of simply ranking links.</li>
+<li>Brand mentions, reviews, authority, expert authorship, and third-party citations become important trust signals.</li>
+<li>AI combines your website, press, profiles, reviews, podcasts, and other public information into one brand story.</li>
+<li>Marketing channels need to tell one coherent story because machines interpret them together.</li>
+<li>Build a verifiable reputation system with expert names, case studies, reviews, original research, and credible third-party mentions.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">AI Search</span>
+<span class="yt-tag">Reputation</span>
+<span class="yt-tag">Trust</span>
+<span class="yt-tag">Brand</span>
+        </div>
+      </article>
+    
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">08</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">Hook library video</span>
+            <h3>33 Viral Hook Templates</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> Do not invent every opening from zero. Use repeatable curiosity structures, then make them specific to your niche.</div>
+        <ul class="yt-points">
+          <li>Strong hooks usually create pain, curiosity, contrast, controversy, or a promised transformation.</li>
+<li>Use specifics such as numbers, time frames, outcomes, mistakes, or a clearly defined audience.</li>
+<li>Patterns include restart scenarios, contrarian beliefs, comparisons, call-outs, research questions, and step-by-step promises.</li>
+<li>Keep the structure but rewrite the wording so it sounds natural for your audience.</li>
+<li>The hook gets attention, but the rest of the content still has to deliver on the promise.</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">Hooks</span>
+<span class="yt-tag">Short Form</span>
+<span class="yt-tag">Curiosity</span>
+<span class="yt-tag">Templates</span>
+        </div>
+      </article>
+    
+
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">09</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">AEO / AI SEO video</span>
+            <h3>AEO: How to Get Recommended by AI Search</h3>
+          </div>
+        </div>
+        <div class="yt-core"><b>Core idea:</b> Traditional SEO is the foundation, but AI visibility also depends on topic-wide relevance, fresh structured content, third-party mentions, YouTube, crawlability, and measurement.</div>
+        <ul class="yt-points">
+          <li><b>AI uses query fan-out:</b> one user prompt can become many smaller searches, so you need authority across an entire topic rather than ranking for only one keyword.</li>
+          <li><b>Focus on consensus, freshness, and authority:</b> consistent brand mentions across the web help AI trust the story, fresh content gets cited more often, and strong traditional Google rankings still give you an advantage.</li>
+          <li><b>Do a brand-gap and prompt analysis:</b> find where competitors are mentioned but you are not, where your brand is mentioned without being cited, and which topics AI associates with competitors instead of you.</li>
+          <li><b>Make content easy for AI to quote:</b> put the bottom line first, make each section understandable on its own, use specific entities and relationships, and write clear declarative sentences. Keep important pages fresh.</li>
+          <li><b>Build citations beyond your own website:</b> pursue editorial mentions, useful Reddit/community participation, and your own indexed properties. YouTube is especially important, so create evergreen search-focused videos with the keyword in the title, description, chapters, and spoken audio.</li>
+          <li><b>Check the technical and measurement layer:</b> make sure robots.txt is not blocking AI crawlers, then track AI referral traffic, AI bot activity, and self-reported attribution such as “How did you hear about us?”</li>
+        </ul>
+        <div class="yt-tag-row">
+          <span class="yt-tag">AEO</span>
+          <span class="yt-tag">AI SEO</span>
+          <span class="yt-tag">Citations</span>
+          <span class="yt-tag">YouTube SEO</span>
+          <span class="yt-tag">Brand Mentions</span>
+        </div>
+      </article>
+
+
+      <article class="yt-card">
+        <div class="yt-card-head">
+          <div class="yt-index">10</div>
+          <div class="yt-title-wrap">
+            <span class="yt-source">LinkedIn cold DM video</span>
+            <h3>LinkedIn Cold DM Blueprint: Voice Notes + ABCD Method</h3>
+          </div>
+        </div>
+
+        <div class="yt-core">
+          <b>Core idea:</b> Cold LinkedIn DMs work better when you reduce friction, respect the prospect’s attention, and use formats that feel more human and easier to reply to.
+        </div>
+
+        <ul class="yt-points">
+          <li><b>Use voice notes as a pattern interrupt:</b> most LinkedIn inboxes are full of generic text, so voice notes stand out and create curiosity.</li>
+          <li><b>Keep voice notes casual and human:</b> quickly introduce yourself, explain why you sent a voice note, and share one relevant idea instead of delivering a stiff pitch.</li>
+          <li><b>Respect the attention power dynamic:</b> you are entering their inbox and asking for something, so make the message easy to read and easy to respond to.</li>
+          <li><b>Do not ask for a meeting too early:</b> the first objective is a low-friction response, not immediately forcing a call or demo.</li>
+          <li><b>Use the ABCD method for text DMs:</b> let the prospect respond with one letter, which reduces effort and can improve reply rates.</li>
+          <li><b>ABCD also improves CRM segmentation:</b> A = ready, B = later follow-up, C = not interested, D = definitely not interested.</li>
+        </ul>
+
+        <div class="yt-template-box">
+          <h4>Template 1: Voice Note DM</h4>
+          <pre>Hi [Name], sorry for the voice note. I’m just on the move at the moment, but I really wanted to reach out to you.
+
+I’m [Your Name] from [Business].
+
+I had an idea around [specific problem / opportunity] that I thought might be useful for you.
+
+Here’s what I’m thinking: [short useful idea / observation].
+
+If that sounds relevant, happy to explain it properly.</pre>
+        </div>
+
+        <div class="yt-template-box">
+          <h4>Template 2: ABCD Text DM</h4>
+          <pre>Hi [Name], I’m [Your Name] from [Business].
+
+I’ll use as little of your time as possible.
+
+Could you reply with just one letter?
+
+A = Yes, I’m interested. Let’s move forward.
+B = Interested, but not right now.
+C = Not really interested.
+D = F*** off, leave me alone 😄
+
+No pressure either way.</pre>
+        </div>
+
+        <div class="yt-tag-row">
+          <span class="yt-tag">LinkedIn DMs</span>
+          <span class="yt-tag">Voice Notes</span>
+          <span class="yt-tag">ABCD Method</span>
+          <span class="yt-tag">Cold Outreach</span>
+          <span class="yt-tag">CRM</span>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="yt-footer-note">
+      Best way to use this page: pick one framework, turn it into an action for your own business, then come back to the next card.
+      The notes are intentionally practical rather than full transcript summaries.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const navButtons = document.querySelectorAll('.top-nav button');
+  const views = document.querySelectorAll('.view');
+  navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.target;
+      navButtons.forEach(b => b.classList.toggle('active', b === button));
+      views.forEach(v => v.classList.toggle('active', v.id === target));
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  const search = document.getElementById('hook-search');
+  if(search){
+    search.addEventListener('input', () => {
+      const q = search.value.toLowerCase().trim();
+      document.querySelectorAll('.hook-card').forEach(card => {
+        card.style.display = (card.dataset.search || '').includes(q) ? '' : 'none';
+      });
+    });
+  }
+
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      try{
+        await navigator.clipboard.writeText(btn.dataset.copy || '');
+        const original = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(() => btn.textContent = original, 1000);
+      }catch(e){
+        btn.textContent = 'Copy manually';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
